@@ -115,22 +115,72 @@ window.addEventListener('keydown', (event) => {
 });
 
 // Loop de animação
-function animate() {
-    requestAnimationFrame(animate);
-    // Atualizar a posição dos meteoros
+let isGamePaused = false;
+
+// Função simples de detecção de colisão
+function detectCollision(obj1, obj2) {
+    const obj1Box = new THREE.Box3().setFromObject(obj1);
+    const obj2Box = new THREE.Box3().setFromObject(obj2);
+    return obj1Box.intersectsBox(obj2Box);
+}
+
+// Exibir o botão de reinício quando o jogo for pausado
+function showRestartButton() {
+    const restartButton = document.getElementById('restartButton');
+    restartButton.style.display = 'block'; // Exibe o botão
+    restartButton.addEventListener('click', restartGame); // Adiciona evento de clique
+}
+
+// Função para reiniciar o jogo
+function restartGame() {
+    // Resetar a posição da nave
+    spaceship.position.set(0, 0, 0);
+
+    // Resetar a posição dos meteoros
     scene.children.forEach((child) => {
         if (child.userData.velocity) {
-            child.position.z += child.userData.velocity;
-
-            // Resetar o meteoro quando ele passa pela nave
-            if (child.position.z < -50) {
-                child.position.z = Math.random() * 100 + 50;
-                child.position.x = Math.random() * 40 - 20;
-                child.position.y = Math.random() * 40 - 20;
-            }
+            child.position.z = Math.random() * 100 + 50;
+            child.position.x = Math.random() * 40 - 20;
+            child.position.y = Math.random() * 40 - 20;
         }
     });
-    renderer.render(scene, camera);
+
+    // Ocultar o botão de reinício
+    const restartButton = document.getElementById('restartButton');
+    restartButton.style.display = 'none';
+
+    isGamePaused = false; // Retomar o jogo
+    animate(); // Recomeçar a animação
+}
+
+// Loop de animação
+function animate() {
+    if (!isGamePaused) {
+        requestAnimationFrame(animate);
+
+        // Atualizar a posição dos meteoros
+        scene.children.forEach((child) => {
+            if (child.userData.velocity) {
+                child.position.z += child.userData.velocity;
+
+                // Resetar o meteoro quando ele passa pela nave
+                if (child.position.z < -50) {
+                    child.position.z = Math.random() * 100 + 50;
+                    child.position.x = Math.random() * 40 - 20;
+                    child.position.y = Math.random() * 40 - 20;
+                }
+
+                // Verificar colisão com a nave
+                if (spaceship && detectCollision(spaceship, child)) {
+                    isGamePaused = true; // Pausar o jogo
+                    console.log("Colisão detectada! Jogo pausado.");
+                    showRestartButton(); // Mostrar o botão de reinício
+                }
+            }
+        });
+
+        renderer.render(scene, camera);
+    }
 }
 
 animate();
