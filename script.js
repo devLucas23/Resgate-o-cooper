@@ -9,6 +9,7 @@ document.body.appendChild(renderer.domElement);
 camera.position.set(0, 0, -30); // A câmera está atrás da nave
 camera.lookAt(0, 0, 0);
 
+//Background
 const loader = new THREE.TextureLoader();
 scene.background = loader.load('https://t3.ftcdn.net/jpg/03/70/74/32/360_F_370743254_qAbRG8YcWNjPVCPVOE0A7Buy8DH4yHTf.jpg');
 
@@ -16,7 +17,7 @@ scene.background = loader.load('https://t3.ftcdn.net/jpg/03/70/74/32/360_F_37074
 const ambientLight = new THREE.AmbientLight(0xffffff, 1);
 scene.add(ambientLight);
 
-// Carregar a textura do meteoro
+// Textura do Meteoro
 const textureLoader = new THREE.TextureLoader();
 const texture = textureLoader.load('texturas/10464_Asteroid_v1_diffuse.jpg');
 
@@ -157,14 +158,14 @@ window.addEventListener('keydown', (event) => {
 
 // Função para detectar colisão
 function detectCollision(obj1, obj2) {
-    const obj1Box = new THREE.Box3().setFromObject(obj1);
-    const obj2Box = new THREE.Box3().setFromObject(obj2);
-    return obj1Box.intersectsBox(obj2Box);
-}
+    const obj1Box = new THREE.Box3().setFromObject(obj1); //caixas de colisão "Box3"
+    const obj2Box = new THREE.Box3().setFromObject(obj2); //setFromObject = usa as dimensões do objeto escolhido
+    return obj1Box.intersectsBox(obj2Box); //o retorno verifica se as caixas compartilham do mesmo espaço (intersecção)
+}//retorna true ou false
 
 // Função para reiniciar o jogo
 function restartGame() {
-    spaceship.position.set(0, 0, 0);
+    spaceship.position.set(0, 0, 0);//Quando o botão de reiniciar for clicado, coloca a nave no centro
 
     scene.children.forEach((child) => {
         if (child.userData.velocity) {
@@ -172,27 +173,27 @@ function restartGame() {
             child.position.x = Math.random() * 40 - 20;
             child.position.y = Math.random() * 40 - 20;
         }
-    });
+    });//reinicia a geração de meteoros
 
     const restartButton = document.getElementById('restartButton');
-    restartButton.style.display = 'none';
+    restartButton.style.display = 'none';//pega no index o botão de reiniciar e esconde ele de novo
 
     isGamePaused = false;
     animate();
 }
 
-// Exibir o botão de reinício
+// Exibir o botão de reiniciar
 function showRestartButton() {
     const restartButton = document.getElementById('restartButton');
-    restartButton.style.display = 'block';
-    restartButton.addEventListener('click', restartGame);
+    restartButton.style.display = 'block'; //mudando o display para block
+    restartButton.addEventListener('click', restartGame);//o botão recebe a função de reiniciar o jogo
 }
 
 let isGamePaused = false;
 
 // Loop de animação
 function animate() {
-    if (!isGamePaused) {
+    if (!isGamePaused) {//o jogo é pausado quando acontece uma colisão
         requestAnimationFrame(animate);
 
         scene.children.forEach((child) => {
@@ -205,10 +206,10 @@ function animate() {
                     child.position.y = Math.random() * 40 - 20;
                 }
 
-                if (spaceship && detectCollision(spaceship, child)) {
-                    isGamePaused = true;
+                if (spaceship && detectCollision(spaceship, child)) {//usando a função de colisão nos meteoros contra a nave
+                    isGamePaused = true;//se colisão = true, pausamos o jogo
                     console.log("Colisão detectada! Jogo pausado.");
-                    showRestartButton();
+                    showRestartButton();//chamamos a função de mostrar o botão de reiniciar, que tem a função de reiniciar implementada
                 }
             }
         });
