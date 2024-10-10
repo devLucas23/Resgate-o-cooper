@@ -1,0 +1,49 @@
+<!DOCTYPE html> <!-- Eu sou um HTML com linguágem setada em português -->
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8"> <!-- Esse é meu tipo de caractere, permito tudo do ABNT2 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Meu ajuste de escala de página -->
+    <title>Asteroide 3D</title> <!-- O título da minha página -->
+    <style>
+        body { /* Não tenho borda padrão*/
+            margin: 0; 
+        }
+
+        canvas { /*O meu jogo ocupa o bloco completo*/
+            display: block;
+        }
+
+        /*botão de reiniciar*/
+        #restartButton {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            display: none; /* Começa oculto */
+        }
+
+        #restartButton:hover {
+            background-color: #cc0000;
+        }
+    </style>
+</head>
+
+<body> <!-- Three.js, OBJLoader (carregar objetos 3D), MTLLoader (Carregar texturas) e o OrbitControls (Poder interagir com zoom e rotação)-->
+    <button id="restartButton">Reiniciar</button> <!-- Botão de reinício -->
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/MTLLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="script.js"></script> <!-- Aqui é o projeto do meu jogo! -->
+</body>
+
+</html>
