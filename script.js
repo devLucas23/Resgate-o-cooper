@@ -76,7 +76,6 @@ spaceshipMtlLoader.load('saberncc61947.mtl', (materials) => {
         spaceship = object;
         spaceship.scale.set(1.0, 1.0, 1.0);
         spaceship.position.set(0, 0, 0);
-        spaceship.rotation.y = Math.PI - Math.PI; // Nave apontando na direção dos meteoros
         scene.add(spaceship);
     });
 });
@@ -95,7 +94,7 @@ audioLoader.load('music/Música Tema - Interestelar .mp3', function(buffer) {
 });
 
 // Função para criar projéteis a partir dos canhões
-const createProjectileFromCannons = () => {
+function createProjectileFromCannons () {
     const projectileGeometry = new THREE.SphereGeometry(0.2, 8, 8);
     const projectileMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 
@@ -119,7 +118,7 @@ const createProjectileFromCannons = () => {
 };
 
 // Atualizar a posição dos projéteis
-const updateProjectiles = () => {
+function updateProjectiles () {
     for (let i = projectiles.length - 1; i >= 0; i--) {
         const projectile = projectiles[i];
         projectile.position.z += 0.9;
