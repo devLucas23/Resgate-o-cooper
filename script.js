@@ -1,13 +1,19 @@
-// Configuração para a cena, câmera e renderizador
+// Configuração para a cena, câmeras e renderizador
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const mainCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const personCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+let activeCamera = mainCamera; // Define a câmera inicial como a câmera principal
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// Posição da câmera
-camera.position.set(0, 0, -30); // A câmera está atrás da nave
-camera.lookAt(0, 0, 0);
+// Posição da câmera principal (atrás da nave)
+mainCamera.position.set(0, 0, -30);
+mainCamera.lookAt(0, 0, 0);
+
+// Posição da câmera em primeira pessoa (dentro da nave)
+personCamera.position.set(0, 2, 5); // Ajuste conforme necessário para a posição correta dentro da nave
+personCamera.lookAt(0, 2, 10);
 
 // Background
 const loader = new THREE.TextureLoader();
@@ -83,7 +89,7 @@ spaceshipMtlLoader.load('saberncc61947.mtl', (materials) => {
 
 // Adicionar música de fundo
 const listener = new THREE.AudioListener();
-camera.add(listener);
+mainCamera.add(listener);
 
 const sound = new THREE.Audio(listener);
 const audioLoader = new THREE.AudioLoader();
@@ -158,6 +164,10 @@ window.addEventListener('keydown', (event) => {
         case ' ':
             createProjectileFromCannons(); // Disparar projéteis
             break;
+        case 'c':
+                // Alternar entre a câmera principal e a câmera de 1ª pessoa
+             activeCamera = (activeCamera === mainCamera) ? personCamera : mainCamera;
+             break;
     }
 });
 
@@ -255,8 +265,14 @@ function animate() {
             }
         }
 
+        // Atualizar a posição da câmera em primeira pessoa para seguir a nave no eixo Z
+        if (activeCamera === personCamera) {
+            personCamera.position.set(spaceship.position.x, spaceship.position.y + 2, spaceship.position.z + 5);
+            personCamera.lookAt(spaceship.position.x, spaceship.position.y + 2, spaceship.position.z + 10);
+        }
+
         updateProjectiles(); // Atualiza a posição dos projéteis
-        renderer.render(scene, camera); // Renderiza a cena
+        renderer.render(scene, activeCamera); // Renderiza a cena
     }
 }
 
