@@ -24,6 +24,7 @@ const texture = textureLoader.load('texturas/10464_Asteroid_v1_diffuse.jpg');
 // Arrays para armazenar meteoros e projéteis
 const meteors = [];
 const projectiles = [];
+let pontuacao = 0;
 
 // Carregar o arquivo MTL e OBJ para os meteoros
 const mtlLoader = new THREE.MTLLoader();
@@ -181,6 +182,8 @@ function restartGame() {
 
     const restartButton = document.getElementById('restartButton');
     restartButton.style.display = 'none'; // Esconde o botão de reiniciar
+    pontuacao = 0;
+    refreshPoints();
 
     isGamePaused = false;
     animate();
@@ -191,6 +194,13 @@ function showRestartButton() {
     const restartButton = document.getElementById('restartButton');
     restartButton.style.display = 'block'; // Mostra o botão de reiniciar
     restartButton.addEventListener('click', restartGame); // Adiciona a função de reiniciar ao botão
+}
+
+function refreshPoints() {
+    const pontuacaoElement = document.getElementById('pontuacao');
+    if (pontuacaoElement) {
+        pontuacaoElement.innerText = "Pontuação: " + pontuacao;
+    }
 }
 
 let isGamePaused = false;
@@ -237,7 +247,9 @@ function animate() {
                         Math.random() * 100 + 50
                     );
 
-                    console.log("Meteoro destruído!");
+                    pontuacao += 1;
+                    refreshPoints();
+                    console.log("Meteoro destruído! Pontuação: " + pontuacao);
                     break; // Interrompe o loop de meteoros para este projétil
                 }
             }
