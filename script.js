@@ -1,3 +1,9 @@
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+
 // Configuração para a cena, câmeras e renderizador
 const scene = new THREE.Scene();
 const mainCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -16,8 +22,8 @@ personCamera.position.set(0, 2, 5); // Ajuste conforme necessário para a posiç
 personCamera.lookAt(0, 2, 10);
 
 // Background
-const loader = new THREE.TextureLoader();
-scene.background = loader.load('texturas/buraco negro.jpg');
+//const loader = new THREE.TextureLoader();
+//scene.background = loader.load('texturas/buraco negro.jpg');
 
 // Iluminação
 const ambientLight = new THREE.AmbientLight(0xffffff, 1);
@@ -33,12 +39,12 @@ const projectiles = [];
 let pontuacao = 0;
 
 // Carregar o arquivo MTL e OBJ para os meteoros
-const mtlLoader = new THREE.MTLLoader();
+const mtlLoader = new MTLLoader();
 mtlLoader.setPath('texturas/');
 mtlLoader.load('10464_Asteroid_v1_Iteration-2.mtl', (materials) => {
     materials.preload();
 
-    const objLoader = new THREE.OBJLoader();
+    const objLoader = new OBJLoader();
     objLoader.setMaterials(materials);
     objLoader.setPath('texturas/');
 
@@ -72,11 +78,11 @@ mtlLoader.load('10464_Asteroid_v1_Iteration-2.mtl', (materials) => {
 
 // Carregar a nave
 let spaceship;
-const spaceshipMtlLoader = new THREE.MTLLoader();
+const spaceshipMtlLoader = new MTLLoader();
 spaceshipMtlLoader.setPath('nave/');
 spaceshipMtlLoader.load('saberncc61947.mtl', (materials) => {
     materials.preload();
-    const spaceshipObjLoader = new THREE.OBJLoader();
+    const spaceshipObjLoader = new OBJLoader();
     spaceshipObjLoader.setMaterials(materials);
     spaceshipObjLoader.setPath('nave/');
     spaceshipObjLoader.load('saberncc61947.obj', (object) => {
@@ -85,6 +91,24 @@ spaceshipMtlLoader.load('saberncc61947.mtl', (materials) => {
         spaceship.position.set(0, 0, 0);
         scene.add(spaceship);
     });
+});
+
+// Carregar o buraco negro
+const buracoloader = new GLTFLoader();
+buracoloader.setPath('nave/'); // Ajuste o caminho conforme necessário
+buracoloader.load('blackhole.glb', (gltf) => {
+    const blackHoleMesh = gltf.scene;
+
+    // Habilitar sombreamento
+    blackHoleMesh.traverse((child) => {
+        if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+        }
+    });
+    blackHoleMesh.scale.set(60, 60, 60);
+    blackHoleMesh.position.set(0, -10, 200); // Ajuste a posição conforme necessário
+    scene.add(blackHoleMesh);
 });
 
 // Adicionar música de fundo
