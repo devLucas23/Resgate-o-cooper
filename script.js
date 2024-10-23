@@ -17,13 +17,9 @@ document.body.appendChild(renderer.domElement);
 mainCamera.position.set(0, 0, -30);
 mainCamera.lookAt(0, 0, 0);
 
-// Posição da câmera em primeira pessoa (dentro da nave)
-personCamera.position.set(0, 2, 5); // Ajuste conforme necessário para a posição correta dentro da nave
+// câmera em primeira pessoa (dentro da nave)
+personCamera.position.set(0, 2, 5); 
 personCamera.lookAt(0, 2, 10);
-
-// Background
-//const loader = new THREE.TextureLoader();
-//scene.background = loader.load('texturas/buraco negro.jpg');
 
 // Iluminação
 const ambientLight = new THREE.AmbientLight(0xffffff, 1);
@@ -131,8 +127,8 @@ function createProjectileFromCannons () {
 
     // Posições dos canhões
     const cannonOffsets = [
-        { x: -2.3, y: 0, z: 5.5 },  // Posição do canhão esquerdo
-        { x: 2.3, y: 0, z: 5.5 }    // Posição do canhão direito
+        { x: -2.3, y: 0, z: 5.5 },  // canhão esquerdo
+        { x: 2.3, y: 0, z: 5.5 }    // canhão direito
     ];
 
     cannonOffsets.forEach((offset) => {
