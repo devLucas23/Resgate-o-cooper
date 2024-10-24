@@ -126,8 +126,8 @@ function createProjectileFromCannons () {
 
     // Posições dos canhões
     const cannonOffsets = [
-        { x: -2.3, y: 0, z: 5.5 },  // canhão esquerdo
-        { x: 2.3, y: 0, z: 5.5 }    // canhão direito
+        { x: -0.8, y: 0, z: 5.5 },  // canhão esquerdo
+        { x: 0.8, y: 0, z: 5.5 }    // canhão direito
     ];
 
     cannonOffsets.forEach((offset) => {
@@ -239,8 +239,8 @@ function animate() {
     if (!isGamePaused) { // O jogo é pausado quando acontece uma colisão com a nave
 
         if(blackhole) {
-            blackhole.position.z -= 0.1;
-            blackhole.rotation.y += 0.001;
+            //blackhole.position.z -= 0.1;
+            blackhole.rotation.y += 0.008;
         }
 
         requestAnimationFrame(animate);
