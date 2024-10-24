@@ -92,6 +92,7 @@ spaceshipMtlLoader.load('saberncc61947.mtl', (materials) => {
 // Carregar o buraco negro
 const buracoloader = new GLTFLoader();
 buracoloader.setPath('nave/'); // Ajuste o caminho conforme necessário
+let blackhole = null;
 buracoloader.load('blackhole.glb', (gltf) => {
     const blackHoleMesh = gltf.scene;
 
@@ -104,6 +105,7 @@ buracoloader.load('blackhole.glb', (gltf) => {
     });
     blackHoleMesh.scale.set(60, 60, 60);
     blackHoleMesh.position.set(0, -10, 200); // Ajuste a posição conforme necessário
+    blackhole = blackHoleMesh;
     scene.add(blackHoleMesh);
 });
 
@@ -238,6 +240,12 @@ let isGamePaused = false;
 // Loop de animação
 function animate() {
     if (!isGamePaused) { // O jogo é pausado quando acontece uma colisão com a nave
+
+        if(blackhole) {
+            blackhole.position.z -= 0.1;
+            blackhole.rotation.y += 0.01;
+        }
+
         requestAnimationFrame(animate);
 
         // Atualizar posição dos meteoros
