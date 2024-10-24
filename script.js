@@ -21,6 +21,9 @@ mainCamera.lookAt(0, 0, 0);
 personCamera.position.set(0, 2, 5); 
 personCamera.lookAt(0, 2, 10);
 
+const loader = new THREE.TextureLoader();
+scene.background = loader.load('nave/background.jpg');
+
 // Iluminação
 const ambientLight = new THREE.AmbientLight(0xffffff, 1);
 scene.add(ambientLight);
@@ -74,19 +77,13 @@ mtlLoader.load('10464_Asteroid_v1_Iteration-2.mtl', (materials) => {
 
 // Carregar a nave
 let spaceship;
-const spaceshipMtlLoader = new MTLLoader();
-spaceshipMtlLoader.setPath('nave/');
-spaceshipMtlLoader.load('saberncc61947.mtl', (materials) => {
-    materials.preload();
-    const spaceshipObjLoader = new OBJLoader();
-    spaceshipObjLoader.setMaterials(materials);
-    spaceshipObjLoader.setPath('nave/');
-    spaceshipObjLoader.load('saberncc61947.obj', (object) => {
-        spaceship = object;
-        spaceship.scale.set(1.0, 1.0, 1.0);
-        spaceship.position.set(0, 0, 0);
-        scene.add(spaceship);
-    });
+const gltfLoader = new GLTFLoader();
+gltfLoader.setPath('nave/');
+gltfLoader.load('nave.glb', (gltf) => {
+    spaceship = gltf.scene;
+    spaceship.scale.set(1.0, 1.0, 1.0);
+    spaceship.position.set(0, 0, 0);
+    scene.add(spaceship);
 });
 
 // Carregar o buraco negro
@@ -243,7 +240,7 @@ function animate() {
 
         if(blackhole) {
             blackhole.position.z -= 0.1;
-            blackhole.rotation.y += 0.01;
+            blackhole.rotation.y += 0.001;
         }
 
         requestAnimationFrame(animate);
