@@ -15,7 +15,7 @@ document.body.appendChild(renderer.domElement);
 
 // Posição da câmera principal (atrás da nave)
 mainCamera.position.set(0, 0, -30);
-mainCamera.lookAt(0, 0, 0);
+mainCamera.lookAt(0, 0, 0); 
 
 // câmera em primeira pessoa (dentro da nave)
 personCamera.position.set(0, 2, 5); 
@@ -212,8 +212,8 @@ function restartGame() {
 
     const restartButton = document.getElementById('restartButton');
     restartButton.style.display = 'none'; // Esconde o botão de reiniciar
-    pontuacao = 0;
-    refreshPoints();
+    pontuacao = 0; //Zera a pontuação
+    refreshPoints();//Atualiza a pontuação
 
     isGamePaused = false;
     animate();
@@ -230,7 +230,7 @@ function refreshPoints() {
     const pontuacaoElement = document.getElementById('pontuacao');
     if (pontuacaoElement) {
         pontuacaoElement.innerText = "Pontuação: " + pontuacao;
-    }
+    }//Puxa pro html o valor da pontuação.
 }
 
 let isGamePaused = false;
@@ -277,8 +277,8 @@ function animate() {
                         Math.random() * 100 + 50
                     );
 
-                    pontuacao += 1;
-                    refreshPoints();
+                    pontuacao += 1;//soma um a pontuação quando o usuário quebra o meteoro
+                    refreshPoints();//atualiza a pontuação no html
                     console.log("Meteoro destruído! Pontuação: " + pontuacao);
                     break; // Interrompe o loop de meteoros para este projétil
                 }
